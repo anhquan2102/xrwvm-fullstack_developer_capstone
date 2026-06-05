@@ -34,6 +34,7 @@ const Register = () => {
     }
   };
 
+  if (!open) {
     window.location.href = '/';
   }
 
