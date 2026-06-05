@@ -87,3 +87,15 @@ def add_review(request):
             return JsonResponse(
                 {"status": 401, "message": "Error in posting review"})
     return JsonResponse({"status": 403, "message": "Unauthorized"})
+
+
+def get_cars(request):
+    from .models import CarMake, CarModel
+    from .populate import initiate
+    if CarMake.objects.count() == 0:
+        initiate()
+    car_models = CarModel.objects.select_related('car_make')
+    cars = [{'CarModel': m.name, 'CarMake': m.car_make.name,
+             'CarType': m.type, 'CarYear': m.year}
+            for m in car_models]
+    return JsonResponse({'CarModels': cars})
